@@ -23,6 +23,13 @@ class ServerControllerService {
         return process?.isAlive ?: true
     }
 
+    fun moveFiles(file: MultipartFile): Boolean {
+        val destination: File = File(serverDirectory, "testServer.jar")
+        file.transferTo(destination)
+
+        return destination.exists()
+    }
+
     fun startServer(serverFileDirectory: File) {
         // Set Server Root
         val serverRoot: String = System.getProperty("java.io.tmpdir")
