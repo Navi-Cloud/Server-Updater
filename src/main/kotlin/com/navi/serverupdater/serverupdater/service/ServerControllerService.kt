@@ -11,8 +11,27 @@ class ServerControllerService {
     private var serverDirectory: File = File(System.getProperty("user.home"), "NaviServer").also {
         it.mkdir()
     }
+    private val destination: File = File(serverDirectory, "testServer.jar")
     private var process: Process? = null
     private val serverSettings: File = File(System.getProperty("java.io.tmpdir"), "application-test.properties")
+
+    fun updateServer(file: MultipartFile) {
+        // First we need to stop server.
+        if (process != null) {
+            if (!stopServer()) {
+                println("Server Stopped Successfully")
+            } else {
+                println("Server Did not stopped or did not started at all!")
+            }
+        }
+
+        if (moveFiles(file)) {
+            println("Successfully moved file!")
+        }
+
+        // Start Server
+        startServer(destination)
+    }
 
     fun stopServer(): Boolean {
         process?.destroy()
@@ -24,7 +43,6 @@ class ServerControllerService {
     }
 
     fun moveFiles(file: MultipartFile): Boolean {
-        val destination: File = File(serverDirectory, "testServer.jar")
         file.transferTo(destination)
 
         return destination.exists()
