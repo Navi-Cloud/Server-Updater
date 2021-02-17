@@ -57,6 +57,7 @@ class ServerControllerService {
          spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
          spring.h2.console.enabled=true
          navi.server-root=${serverRoot}
+         server.port=8085
      """.trimIndent()
         if (serverSettings.exists()) serverSettings.delete()
         val writer: BufferedWriter = BufferedWriter(FileWriter(serverSettings))
